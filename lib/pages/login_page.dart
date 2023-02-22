@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'forgot_page.dart';
 import 'registration_page.dart';
 import 'profile_page.dart';
-import 'home_page.dart';
 
-class LoginDemo extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _LoginDemoState createState() => _LoginDemoState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginDemoState extends State<LoginDemo> {
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +28,7 @@ class _LoginDemoState extends State<LoginDemo> {
                     /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                    child: Image.asset('assets/images/flutter.png')),
+                    child: Image.asset('assets/images/logo.png')),
               ),
             ),
             const Padding(
