@@ -36,13 +36,16 @@ class _ForgotState extends State<ForgotPage> {
               ),
             ),
             Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Reset Password', style: TextStyle(color: Colors.white, fontSize: 25)),
-                ))
+              height: 50,
+              width: 250,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: TextButton(
+                onPressed: () {},
+                child: const Text('Reset Password',
+                    style: TextStyle(color: Colors.white, fontSize: 25)),
+              ),
+            ),
           ],
         ),
       ),

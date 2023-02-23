@@ -66,7 +66,7 @@ class AddVehicleState extends State<AddVehicle> {
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {Navigator.pop(context);},
                     child: const Text(
                       'Add',
                       style: TextStyle(color: Colors.white, fontSize: 25),

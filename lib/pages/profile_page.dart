@@ -7,6 +7,19 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+  var userName = 'Manu Krishna T M';
+  var noVehicles = 2;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      userName;
+      noVehicles;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +30,50 @@ class ProfilePageState extends State<ProfilePage> {
         child: ListView(
           itemExtent: 100.0,
           children: [
-            Center(
-              child: Icon(
-                Icons.person_rounded,
-                size: 80,
-              ),
+            Row(
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Icon(
+                  Icons.person_rounded,
+                  size: 80,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        '$userName',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                        ),
+                        child: Container(
+                          child: Text(
+                            'Number of Vehicles: $noVehicles',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             // Padding(
             //   padding: const EdgeInsets.only(top: 60.0),
@@ -65,6 +117,13 @@ class ProfilePageState extends State<ProfilePage> {
                 icon: Icon(Icons.add),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(
+                //     context, MaterialPageRoute(builder: (_) => ()));
+              },
+              child: Text('Map'),
+            )
           ],
         ),
       ),
