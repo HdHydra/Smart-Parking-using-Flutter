@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:model/pages/add_vehicle.dart';
+import 'package:model/pages/location_page.dart';
+
+import 'package:model/menu/drawer.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   ProfilePageState createState() => ProfilePageState();
 }
@@ -26,6 +31,7 @@ class ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Text('Profile Page'),
       ),
+      drawer:MyDrawer(),
       body: Container(
         child: ListView(
           itemExtent: 100.0,
@@ -59,13 +65,14 @@ class ProfilePageState extends State<ProfilePage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 5,
+                          top: 15,
                         ),
                         child: Container(
                           child: Text(
                             'Number of Vehicles: $noVehicles',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 17,
+                              color: Colors.black54,
                             ),
                           ),
                         ),
@@ -117,13 +124,13 @@ class ProfilePageState extends State<ProfilePage> {
                 icon: Icon(Icons.add),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Navigator.push(
-                //     context, MaterialPageRoute(builder: (_) => ()));
-              },
-              child: Text('Map'),
-            )
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //         context, MaterialPageRoute(builder: (_) => LocationPage()));
+            //   },
+            //   child: Text('Map'),
+            // )
           ],
         ),
       ),
