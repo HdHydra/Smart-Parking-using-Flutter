@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddVehicle extends StatefulWidget {
-  int vehicle;
-  AddVehicle(this.vehicle);
+  final int vehicle;
+  const AddVehicle(this.vehicle, {super.key});
   @override
   AddVehicleState createState() => AddVehicleState();
 }
@@ -17,7 +17,7 @@ class AddVehicleState extends State<AddVehicle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Vehicle'),
+        title: const Text('New Vehicle'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -31,11 +31,12 @@ class AddVehicleState extends State<AddVehicle> {
                   /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                  child: Image.asset('assets/images/${iconVehicle[widget.vehicle]}.png'),
+                  child: Image.asset(
+                      'assets/images/${iconVehicle[widget.vehicle]}.png'),
                 ),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
                 decoration: InputDecoration(
@@ -44,7 +45,7 @@ class AddVehicleState extends State<AddVehicle> {
                     hintText: 'Enter name of your vehicle'),
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
                 decoration: InputDecoration(
@@ -66,7 +67,9 @@ class AddVehicleState extends State<AddVehicle> {
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
-                    onPressed: () {Navigator.pop(context);},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text(
                       'Add',
                       style: TextStyle(color: Colors.white, fontSize: 25),

@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ForgotPage extends StatefulWidget {
-  @override
-  _ForgotState createState() => _ForgotState();
-}
-
-class _ForgotState extends State<ForgotPage> {
+class ForgotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forgot Password'),
+        title: const Text('Forgot Password'),
       ),
       body: SingleChildScrollView(
         child: Column(

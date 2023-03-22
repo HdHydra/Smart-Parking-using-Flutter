@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
 
-class RegistrationPage extends StatefulWidget {
-  @override
-  _RegistrationState createState() => _RegistrationState();
-}
+class RegistrationPage extends StatelessWidget {
+  const RegistrationPage({super.key});
+  // @override
+//   _RegistrationState createState() => _RegistrationState();
+// }
 
-class _RegistrationState extends State<RegistrationPage> {
+// class _RegistrationState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration Page'),
+        title: const Text('Registration Page'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -19,7 +20,7 @@ class _RegistrationState extends State<RegistrationPage> {
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Center(
-                child: Container(
+                child: SizedBox(
                     width: 200,
                     height: 150,
                     /*decoration: BoxDecoration(
@@ -29,8 +30,8 @@ class _RegistrationState extends State<RegistrationPage> {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
@@ -42,8 +43,8 @@ class _RegistrationState extends State<RegistrationPage> {
             ),
             const Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -51,10 +52,9 @@ class _RegistrationState extends State<RegistrationPage> {
                     hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
-
             const Padding(
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
@@ -64,16 +64,7 @@ class _RegistrationState extends State<RegistrationPage> {
                     hintText: 'Enter secure password'),
               ),
             ),
-            // TextButton(
-            //   onPressed: () {
-            //     //TODO FORGOT PASSWORD SCREEN GOES HERE
-            //   },
-            //   child: Text(
-            //     'Forgot Password',
-            //     style: TextStyle(color: Colors.blue, fontSize: 15),
-            //   ),
-            // ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
@@ -83,20 +74,15 @@ class _RegistrationState extends State<RegistrationPage> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => ProfilePage()));
-                  //Navigator.push(
-                  //    context, MaterialPageRoute(builder: (_) => HomePage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => ProfilePage()));
                 },
-                child: Text(
+                child: const Text(
                   'Register',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
-            // SizedBox(
-            //   height: 130,
-            // ),
           ],
         ),
       ),

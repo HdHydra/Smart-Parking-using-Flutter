@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:model/pages/location_page.dart';
-import 'package:model/pages/profile_page.dart';
+import 'package:model/screens/location_page.dart';
+import 'package:model/screens/profile_page.dart';
 
 class MyDrawer extends StatelessWidget {
   void _logOut() {}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:model/menu/drawer.dart';
+import 'package:model/widgets/drawer.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as loc;
@@ -125,10 +125,6 @@ class _LocationPageState extends State<LocationPage> {
     ],
   ];
 
-  // List<enum> accuracy =;
-
-  // List<LatLng> points = [LatLng(0, 0)];
-
   @override
   void initState() {
     super.initState();
@@ -142,7 +138,7 @@ class _LocationPageState extends State<LocationPage> {
   Future _locationPermission() async {
     PermissionStatus permission = await Permission.location.status;
     if (permission == PermissionStatus.granted) {
-      await _checkLocationPermission();
+      await _getLocationStream();
     } else {
       setState(() async {
         await Permission.location.request();
@@ -150,29 +146,11 @@ class _LocationPageState extends State<LocationPage> {
       _locationPermission();
     }
   }
-  // Future<void> initBackgroundFetch() async {
-  //   BackgroundFetch.configure(
-  //     BackgroundFetchConfig(
-  //       minimumFetchInterval: 15, // fetch the location every 15 minutes
-  //       stopOnTerminate: false, // continue running the task even if the app is terminated
-  //       enableHeadless: true, // run the task in the background
-  //       startOnBoot: true, // start the task when the device boots
-  //     ),
-  //         (String taskId) async {
-  //       // fetch the user's location and do something with it
-  //       Position position = await Geolocator.getCurrentPosition();
-  //       print('Location: ${position.latitude}, ${position.longitude}');
-  //       BackgroundFetch.finish(taskId);
-  //     },
-  //   );
-  // }
 
-  Future _checkLocationPermission() async {
-    // PermissionStatus permission = await Permission.location.status;
-    // if (permission == PermissionStatus.granted) {
+  Future _getLocationStream() async {
     print('start');
-    await Geolocator.getPositionStream(
-      locationSettings: LocationSettings(
+    Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.medium,
         distanceFilter: 10,
       ),
@@ -182,33 +160,6 @@ class _LocationPageState extends State<LocationPage> {
       });
     });
 
-    // }
-    // catch (e) {
-    //   Geolocator.getPositionStream(
-    //     locationSettings: const LocationSettings(
-    //       accuracy: LocationAccuracy.high,
-    //       distanceFilter: 10,
-    //     ),
-    //   ).listen((Position position) {
-    //     setState(() {
-    //       _currentPosition = position;
-    //       // points.add(
-    //       //     LatLng(_currentPosition!.latitude, _currentPosition!.longitude));
-    //       //print('high mode');
-    //     });
-    //   });
-    // }
-    // }
-    // else {
-    //   setState(() async {
-    //     // await Permission.location.request();
-    //     PermissionStatus permissionResult = await Permission.location.request();
-    //     if (permissionResult == PermissionStatus.granted) {
-    //       _checkLocationPermission();
-    //     }
-    //   });
-    // _checkLocationPermission();
-    // Future.delayed(Duration(seconds: 3), () async {await _checkLocationPermission();});
   }
 
   @override
@@ -221,7 +172,7 @@ class _LocationPageState extends State<LocationPage> {
       child: Scaffold(
         appBar: AppBar(
           // backgroundColor: Colors.pink[900],
-          title: Text('Find My Location'),
+          title: const Text('Find My Location'),
           actions: [
             Row(
               children: [
@@ -243,7 +194,7 @@ class _LocationPageState extends State<LocationPage> {
         body: RepaintBoundary(
           key: _globalKey,
           child: _currentPosition == null
-              ? Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator())
               : FlutterMap(
                   options: MapOptions(
                     center: LatLng(
@@ -254,14 +205,13 @@ class _LocationPageState extends State<LocationPage> {
                         InteractiveFlag.pinchZoom |
                         InteractiveFlag.doubleTapZoom,
                     zoom: 16.0,
-                    // zoomDuration: const Duration(milliseconds: 5000),
                     maxZoom: 17.49999,
                   ),
                   children: [
                     TileLayer(
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      subdomains: ['a', 'b', 'c'],
+                      subdomains: const ['a', 'b', 'c'],
                       userAgentPackageName: 'com.example.model',
                       retinaMode: MediaQuery.of(context).devicePixelRatio > 1.0,
                     ),
@@ -363,11 +313,9 @@ class _LocationPageState extends State<LocationPage> {
                               _currentPosition!.latitude,
                               _currentPosition!.longitude,
                             ),
-                            builder: (ctx) => Container(
-                              child: const Icon(
-                                Icons.location_pin,
-                                color: Colors.red,
-                              ),
+                            builder: (ctx) => const Icon(
+                              Icons.location_pin,
+                              color: Colors.red,
                             ),
                           ),
                         ],

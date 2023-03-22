@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'pages/login_page.dart';
+import 'screens/login_page.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final primaryColor = MaterialColor(
+  final primaryColor = const MaterialColor(
     0xFF000000, // specify the primary color value as black
     <int, Color>{
       50: Color(0xFFE3F2FD),
