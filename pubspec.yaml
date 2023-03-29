@@ -43,8 +43,10 @@ dependencies:
   location: ^5.0.0-dev.8
   permission_handler:
   firebase_core: ^2.8.0
+  firebase_database:
   firebase_auth: ^4.3.0
   cloud_firestore:
+  firebase_storage: ^11.0.16
 
 dev_dependencies:
   flutter_test:

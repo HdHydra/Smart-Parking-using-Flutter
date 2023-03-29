@@ -4,8 +4,8 @@ import 'package:latlong2/latlong.dart';
 List<Color> polygonColors = [Colors.green, Colors.red];
 List<List<LatLng>> polygonCoordinates = [
   [
-    LatLng(10.82346691, 76.64191132),
-    LatLng(10.82336177, 76.64234197),
+    LatLng(10.82343014, 76.64234197),
+    LatLng(10.82336177, 76.64234280),
     LatLng(10.82339871, 76.64190508),
     LatLng(10.82346691, 76.64191132)
   ],

@@ -1,13 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
 
 class RegistrationPage extends StatelessWidget {
-  const RegistrationPage({super.key});
-  // @override
+  RegistrationPage({super.key});
+
+//   @override
 //   _RegistrationState createState() => _RegistrationState();
 // }
 
 // class _RegistrationState extends State<RegistrationPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  String textError = "";
+  final passwordController = TextEditingController();
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +29,7 @@ class RegistrationPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Center(
@@ -29,34 +42,36 @@ class RegistrationPage extends StatelessWidget {
                     child: Image.asset('assets/images/logo.png')),
               ),
             ),
-            const Padding(
+            Padding(
               padding:
                   EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
-                obscureText: true,
+                controller: usernameController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Username',
                     hintText: 'Enter your username'),
               ),
             ),
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding:
                   EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
                     hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
-            const Padding(
+            Padding(
               padding:
                   EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -67,6 +82,12 @@ class RegistrationPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            Padding(
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+              //padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(textError),
+            ),
             Container(
               height: 50,
               width: 250,
@@ -74,8 +95,18 @@ class RegistrationPage extends StatelessWidget {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => ProfilePage()));
+                  FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim())
+                      .then((value) {
+                    value.user!.updateDisplayName(usernameController.text.trim());
+                    print('Created New Account');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()));
+                  }).onError((error, stackTrace) {
+                    print("Error ${error.toString()}");
+                  });
                 },
                 child: const Text(
                   'Register',

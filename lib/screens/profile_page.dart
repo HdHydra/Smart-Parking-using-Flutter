@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:model/screens/add_vehicle.dart';
 import 'package:model/widgets/drawer.dart';
@@ -10,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  var userName = 'Manu Krishna T M';
+  var userName;
   var noVehicles = 2;
 
   @override
@@ -18,7 +19,7 @@ class ProfilePageState extends State<ProfilePage> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      userName;
+      userName = FirebaseAuth.instance.currentUser?.displayName;
       noVehicles;
     });
   }
@@ -54,7 +55,7 @@ class ProfilePageState extends State<ProfilePage> {
                     height: 20,
                   ),
                   Text(
-                    userName,
+                    "${userName}",
                     style: const TextStyle(
                       fontSize: 20,
                     ),
@@ -85,7 +86,7 @@ class ProfilePageState extends State<ProfilePage> {
             trailing: IconButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => AddVehicle(1)));
+                      MaterialPageRoute(builder: (context) => AddVehicle(1)));
                 },
                 icon: const Icon(Icons.add)),
           ),
@@ -98,8 +99,8 @@ class ProfilePageState extends State<ProfilePage> {
             subtitle: const Text("Add a new Bike"),
             trailing: IconButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => AddVehicle(0)));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddVehicle(0)));
               },
               icon: const Icon(Icons.add),
             ),

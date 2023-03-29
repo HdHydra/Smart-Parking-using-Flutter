@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:model/screens/main_page.dart';
 import 'screens/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
   final primaryColor = const MaterialColor(
     0xFF000000, // specify the primary color value as black
     <int, Color>{
@@ -26,7 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(primarySwatch: primaryColor),
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: MainPage(),
     );
   }
 }

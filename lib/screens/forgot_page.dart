@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPage extends StatelessWidget {
+  ForgotPage({super.key});
+  final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +23,10 @@ class ForgotPage extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(20),
               child: TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   hintText: 'Enter your mail ID',
@@ -36,7 +40,10 @@ class ForgotPage extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  FirebaseAuth.instance
+                      .sendPasswordResetEmail(email: emailController.text);
+                },
                 child: const Text('Reset Password',
                     style: TextStyle(color: Colors.white, fontSize: 25)),
               ),

@@ -1,14 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'forgot_page.dart';
 import 'registration_page.dart';
 import 'profile_page.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,22 +45,24 @@ class _LoginPageState extends State<LoginPage> {
                     child: Image.asset('assets/images/logo.png')),
               ),
             ),
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email / Username',
                     hintText: 'Enter valid email id or Username'),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+            Padding(
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
+                controller: passwordController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
@@ -55,9 +71,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => ForgotPage()));
-                //TODO FORGOT PASSWORD SCREEN GOES HERE
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ForgotPage()));
               },
               child: const Text(
                 'Forgot Password',
@@ -71,8 +86,17 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                     context, MaterialPageRoute(builder: (_) => ProfilePage()));
+                  FirebaseAuth.instance
+                      .signInWithEmailAndPassword(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim())
+                      .then((value) {
+                        print('Login Successful');
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => ProfilePage()));
+                      }).onError((error, stackTrace) {
+                        print('Error ${error}');
+                      });
                 },
                 child: const Text(
                   'Login',
@@ -86,7 +110,9 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => RegistrationPage()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RegistrationPage()));
               },
               child: const Text(
                 'New User? Create Account',
