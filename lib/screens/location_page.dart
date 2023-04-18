@@ -108,23 +108,28 @@ class _LocationPageState extends State<LocationPage> {
               ? const Center(child: CircularProgressIndicator())
               : FlutterMap(
                   options: MapOptions(
-                      center: LatLng(
-                        _currentPosition!.latitude,
-                        _currentPosition!.longitude,
-                      ),
-                      interactiveFlags: InteractiveFlag.drag |
-                          InteractiveFlag.pinchZoom |
-                          InteractiveFlag.doubleTapZoom,
-                      zoom: 16.0,
-                      maxZoom: 17.499999,
-                      minZoom: 8),
+                    center: LatLng(
+                      _currentPosition!.latitude,
+                      _currentPosition!.longitude,
+                    ),
+                    interactiveFlags: InteractiveFlag.drag |
+                        InteractiveFlag.pinchZoom |
+                        InteractiveFlag.doubleTapZoom,
+                    zoom: 16.0,
+                    minZoom: 8,
+                    maxZoom: 21,
+                  ),
                   children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      subdomains: const ['a', 'b', 'c'],
-                      userAgentPackageName: 'com.example.model',
-                      retinaMode: MediaQuery.of(context).devicePixelRatio > 1.0,
+                    RepaintBoundary(
+                      child: TileLayer(
+                        maxNativeZoom: 18,
+                        maxZoom: 20,
+                        urlTemplate:
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        subdomains: const ['a', 'b', 'c'],
+                        userAgentPackageName: 'com.example.model',
+                        retinaMode: MediaQuery.of(context).devicePixelRatio > 1.0,
+                      ),
                     ),
                     RepaintBoundary(
                       child: PolygonLayer(

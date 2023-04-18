@@ -42,7 +42,9 @@ class ForgotPage extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   FirebaseAuth.instance
-                      .sendPasswordResetEmail(email: emailController.text);
+                      .sendPasswordResetEmail(email: emailController.text)
+                      .then((value) => print('Successful'))
+                      .onError((error, stackTrace) => print('error ${error}'));
                 },
                 child: const Text('Reset Password',
                     style: TextStyle(color: Colors.white, fontSize: 25)),

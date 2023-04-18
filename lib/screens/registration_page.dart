@@ -13,8 +13,6 @@ class RegistrationPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
   String textError = "";
   final passwordController = TextEditingController();
   final usernameController = TextEditingController();
@@ -99,8 +97,8 @@ class RegistrationPage extends StatelessWidget {
                       .createUserWithEmailAndPassword(
                           email: emailController.text.trim(),
                           password: passwordController.text.trim())
-                      .then((value) {
-                    value.user!.updateDisplayName(usernameController.text.trim());
+                      .then((value) async {
+                        await FirebaseAuth.instance.currentUser!.updateDisplayName(usernameController.text.trim());
                     print('Created New Account');
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => ProfilePage()));

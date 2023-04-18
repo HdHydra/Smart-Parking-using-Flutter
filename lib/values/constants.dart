@@ -1,5 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'dart:math';
+
+final int noSlots = 16;
+List capacity = [
+  40,
+  10,
+  10,
+  10,
+  40,
+  20,
+  20,
+  50,
+  40,
+  30,
+  50,
+  30,
+  20,
+  10,
+  40,
+  30
+];
 
 List<Color> polygonColors = [Colors.green, Colors.red];
 List<List<LatLng>> polygonCoordinates = [
@@ -100,3 +122,46 @@ List<List<LatLng>> polygonCoordinates = [
     LatLng(10.82382065, 76.64332662),
   ],
 ];
+
+void makeList(double a, double b, double c, double d) {
+  for (int index = 0; index < noSlots; index++) {
+    for (int i = 0; i < capacity[index]; i++) {
+      if ((a - b).abs() > (c - d).abs()) {
+        double aDash =
+            (a > b) ? a : b + (((b - a).abs() / capacity[index]) * i);
+        double bDash =
+            (a > b) ? a : b + (((b - a).abs() / capacity[index]) * (i + 1));
+        double cDash =
+            (c > d) ? c : d + (((d - c).abs() / capacity[index]) * i);
+        double dDash =
+            (c > d) ? c : d + (((d - c).abs() / capacity[index]) * (i + 1));
+        print('${aDash} ${bDash} ${cDash} ${dDash}');
+      } else {
+        double aDash =
+            (d > a) ? d : a + (((a - d).abs() / capacity[index]) * i);
+        double bDash =
+            (d > a) ? d : a + (((a - d).abs() / capacity[index]) * (i + 1));
+        double cDash =
+            (b > c) ? b : c + (((c - b).abs() / capacity[index]) * i);
+        double dDash =
+            (b > c) ? b : c + (((c - b).abs() / capacity[index]) * (i + 1));
+        print('${aDash} ${bDash} ${cDash} ${dDash}');
+      }
+      print('${a} ${b} ${c} ${d}');
+      
+    }
+  }
+}
+// void makeList(double a, double b, double c, double d) {
+//   for (int index = 0; index < noSlots; index++) {
+//     for (int i = 0; i < capacity[index]; i++) {
+//       if ((a - b).abs() > (c - d).abs()) {
+//         double aDash = (a>b)?a:b + (((b - a).abs() / capacity[index]) * i);
+//         double cDash = (c>d)?c:d + (((d - c).abs() / capacity[index]) * i);
+//       } else {
+//         double bc = (b>c)?b:c + (((c - b).abs() / capacity[index]) * i);
+//         double da = (d>a)?d:a + (((a - d).abs() / capacity[index]) * i);
+//       }
+//     }
+//   }
+// }

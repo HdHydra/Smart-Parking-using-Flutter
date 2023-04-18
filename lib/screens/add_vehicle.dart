@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class AddVehicle extends StatefulWidget {
@@ -12,6 +15,25 @@ class AddVehicleState extends State<AddVehicle> {
     'bike',
     'car',
   ];
+
+  final _vehicleName = TextEditingController();
+  final _vehicleNo = TextEditingController();
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  void addDataToFirestore() {
+    final String name = _vehicleName.text;
+    final String no = _vehicleNo.text;
+    if (name.isNotEmpty && no.isNotEmpty) {
+      _db.collection('vehicles').add({
+        'type': (widget.vehicle == 0 ? 'bike' : 'car'),
+        'uid': FirebaseAuth.instance.currentUser?.uid,
+        'name': name,
+        'vehicle_no': no,
+      });
+      _vehicleName.clear();
+      _vehicleNo.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +58,20 @@ class AddVehicleState extends State<AddVehicle> {
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
+                controller: _vehicleName,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Vehicle Name',
                     hintText: 'Enter name of your vehicle'),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
+                controller: _vehicleNo,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Vehicle Number',
@@ -68,6 +92,7 @@ class AddVehicleState extends State<AddVehicle> {
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                     onPressed: () {
+                      addDataToFirestore();
                       Navigator.pop(context);
                     },
                     child: const Text(
