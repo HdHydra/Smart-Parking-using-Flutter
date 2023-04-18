@@ -34,6 +34,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   void initState() {
     super.initState();
+    makeSlots();
     setState(() {
       currentAccuracy = accuracy[choice];
     });
@@ -128,14 +129,15 @@ class _LocationPageState extends State<LocationPage> {
                             'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                         subdomains: const ['a', 'b', 'c'],
                         userAgentPackageName: 'com.example.model',
-                        retinaMode: MediaQuery.of(context).devicePixelRatio > 1.0,
+                        retinaMode:
+                            MediaQuery.of(context).devicePixelRatio > 1.0,
                       ),
                     ),
                     RepaintBoundary(
                       child: PolygonLayer(
                         polygonCulling: false,
                         polygons:
-                            polygonCoordinates.asMap().entries.map((entry) {
+                            polygonSlotsCoordinates.asMap().entries.map((entry) {
                           int index = entry.key;
                           List<LatLng> coordinates = entry.value;
                           Color color =
