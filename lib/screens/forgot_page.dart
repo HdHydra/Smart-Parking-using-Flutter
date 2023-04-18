@@ -1,16 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ForgotPage extends StatefulWidget {
-  @override
-  _ForgotState createState() => _ForgotState();
-}
-
-class _ForgotState extends State<ForgotPage> {
+class ForgotPage extends StatelessWidget {
+  ForgotPage({super.key});
+  final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forgot Password'),
+        title: const Text('Forgot Password'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -25,9 +23,10 @@ class _ForgotState extends State<ForgotPage> {
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(20),
               child: TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   hintText: 'Enter your mail ID',
@@ -36,13 +35,21 @@ class _ForgotState extends State<ForgotPage> {
               ),
             ),
             Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text('Reset Password', style: TextStyle(color: Colors.white, fontSize: 25)),
-                ))
+              height: 50,
+              width: 250,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+              child: TextButton(
+                onPressed: () {
+                  FirebaseAuth.instance
+                      .sendPasswordResetEmail(email: emailController.text)
+                      .then((value) => print('Successful'))
+                      .onError((error, stackTrace) => print('error ${error}'));
+                },
+                child: const Text('Reset Password',
+                    style: TextStyle(color: Colors.white, fontSize: 25)),
+              ),
+            ),
           ],
         ),
       ),

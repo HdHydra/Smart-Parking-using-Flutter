@@ -1,25 +1,37 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
 
-class RegistrationPage extends StatefulWidget {
-  @override
-  _RegistrationState createState() => _RegistrationState();
-}
+class RegistrationPage extends StatelessWidget {
+  RegistrationPage({super.key});
 
-class _RegistrationState extends State<RegistrationPage> {
+//   @override
+//   _RegistrationState createState() => _RegistrationState();
+// }
+
+// class _RegistrationState extends State<RegistrationPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  String textError = "";
+  final passwordController = TextEditingController();
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration Page'),
+        title: const Text('Registration Page'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Center(
-                child: Container(
+                child: SizedBox(
                     width: 200,
                     height: 150,
                     /*decoration: BoxDecoration(
@@ -28,35 +40,36 @@ class _RegistrationState extends State<RegistrationPage> {
                     child: Image.asset('assets/images/logo.png')),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+            Padding(
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
-                obscureText: true,
+                controller: usernameController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Username',
                     hintText: 'Enter your username'),
               ),
             ),
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
                     hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
-
-            const Padding(
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+            Padding(
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -64,17 +77,14 @@ class _RegistrationState extends State<RegistrationPage> {
                     hintText: 'Enter secure password'),
               ),
             ),
-            // TextButton(
-            //   onPressed: () {
-            //     //TODO FORGOT PASSWORD SCREEN GOES HERE
-            //   },
-            //   child: Text(
-            //     'Forgot Password',
-            //     style: TextStyle(color: Colors.blue, fontSize: 15),
-            //   ),
-            // ),
-            SizedBox(
+            const SizedBox(
               height: 20,
+            ),
+            Padding(
+              padding:
+                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+              //padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(textError),
             ),
             Container(
               height: 50,
@@ -83,20 +93,25 @@ class _RegistrationState extends State<RegistrationPage> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => ProfilePage()));
-                  //Navigator.push(
-                  //    context, MaterialPageRoute(builder: (_) => HomePage()));
+                  FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim())
+                      .then((value) async {
+                        await FirebaseAuth.instance.currentUser!.updateDisplayName(usernameController.text.trim());
+                    print('Created New Account');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()));
+                  }).onError((error, stackTrace) {
+                    print("Error ${error.toString()}");
+                  });
                 },
-                child: Text(
+                child: const Text(
                   'Register',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
-            // SizedBox(
-            //   height: 130,
-            // ),
           ],
         ),
       ),
