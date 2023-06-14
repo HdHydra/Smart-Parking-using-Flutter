@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:model/values/constants.dart';
 
 class AddVehicle extends StatefulWidget {
   final int vehicle;
@@ -11,12 +11,34 @@ class AddVehicle extends StatefulWidget {
 }
 
 class AddVehicleState extends State<AddVehicle> {
+  List<String> dropSlotNames = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P'
+  ];
+  String dropSlotName = "A";
+  String dropSlotNumber = "1";
+  int dropIndexValue = 0;
   List<String> iconVehicle = [
     'bike',
     'car',
   ];
 
   final _vehicleName = TextEditingController();
+  late String preferedSlot;
   final _vehicleNo = TextEditingController();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -29,6 +51,7 @@ class AddVehicleState extends State<AddVehicle> {
         'uid': FirebaseAuth.instance.currentUser?.uid,
         'name': name,
         'vehicle_no': no,
+        'prefered_slot': preferedSlot
       });
       _vehicleName.clear();
       _vehicleNo.clear();
@@ -78,6 +101,65 @@ class AddVehicleState extends State<AddVehicle> {
                     hintText: 'Enter your vehicle number'),
               ),
             ),
+            Padding(
+                padding:
+                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
+                child: Row(
+                  children: [
+                    Text('Prefered Slot'),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: DropdownButton<String>(
+                        value: dropSlotName,
+                        items: dropSlotNames
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(fontSize: 16),
+                              ));
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropSlotName = newValue!;
+                            dropSlotNumber = '1';
+                            dropIndexValue = dropSlotNames.indexOf(newValue);
+                            // print("$dropSlotName${capacity[dropIndexValue]}");
+                          });
+                        },
+                      ),
+                    ),
+                    DropdownButton<String>(
+                      value: dropSlotNumber,
+                      items: List<String>.generate(capacity[dropIndexValue],
+                              (i) => (i + 1).toString())
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(fontSize: 16),
+                            ));
+                      }).toList(),
+                      onChanged: (String? newValue2) {
+                        setState(() {
+                          preferedSlot = '$dropSlotName$newValue2';
+                          dropSlotNumber = newValue2!;
+                          print(preferedSlot);
+                        });
+                      },
+                    ),
+                  ],
+                )
+                // TextField(
+                //   controller: _preferedSlot,
+                //   decoration: InputDecoration(
+                //       border: OutlineInputBorder(),
+                //       labelText: 'Prefered Slot',
+                //       hintText: 'Enter your Prefered Slot'),
+                // ),
+                ),
             Container(
               height: 50,
             ),

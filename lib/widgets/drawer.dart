@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:model/screens/location_page.dart';
 import 'package:model/screens/profile_page.dart';
 
+import 'package:easy_geofencing/easy_geofencing.dart';
+// import 'package:easy_geofencing/enums/geofence_status.dart';
+
 import '../screens/login_page.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -47,6 +50,7 @@ class MyDrawer extends StatelessWidget {
           ListTile(
               title: Text('Sign Out'),
               onTap: () {
+                EasyGeofencing.stopGeofenceService();
                 FirebaseAuth.instance.signOut();
                 Navigator.popUntil(context, (route) => false);
                 print(

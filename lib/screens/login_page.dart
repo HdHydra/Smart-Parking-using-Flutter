@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:model/screens/main_page.dart';
 import 'forgot_page.dart';
 import 'registration_page.dart';
-import 'profile_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -40,10 +40,10 @@ class LoginPage extends StatelessWidget {
             ),
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email / Username',
                     hintText: 'Enter valid email id or Username'),
@@ -51,12 +51,12 @@ class LoginPage extends StatelessWidget {
             ),
             Padding(
               padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
                 controller: passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter secure password'),
@@ -86,7 +86,7 @@ class LoginPage extends StatelessWidget {
                       .then((value) {
                         print('Login Successful');
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()));
+                            MaterialPageRoute(builder: (context) => MainPage()));
                       }).onError((error, stackTrace) {
                         print('Error ${error}');
                       });

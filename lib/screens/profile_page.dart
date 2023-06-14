@@ -1,7 +1,13 @@
+import 'dart:async';
+
+import 'package:easy_geofencing/easy_geofencing.dart';
+import 'package:easy_geofencing/enums/geofence_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:model/screens/add_vehicle.dart';
+import 'package:model/values/constants.dart';
 import 'package:model/widgets/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -15,25 +21,99 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+  StreamSubscription<GeofenceStatus>? geofenceStatusStream;
+  String geofenceStatus = '';
+  setGeofencing() async {
+    if (geofenceStatusStream == null) {
+      EasyGeofencing.startGeofenceService(
+          pointedLatitude: "10.8243504",
+          pointedLongitude: "76.6424552",
+          radiusMeter: "399",
+          eventPeriodInSeconds: 10);
+
+      geofenceStatusStream = EasyGeofencing.getGeofenceStream()!.listen(
+        (GeofenceStatus status) {
+          geoStatus = '$status';
+          print(pslot);
+          if (pslot != "" && toastRes != 0) {
+            toast("Slot ${pslot} is reserved for you!");
+            // Fluttertoast.cancel();
+            toastRes = 0;
+          }
+          setState(() {
+            if (pslot != "") {
+              if (geoStatus == 'GeofenceStatus.enter') slotNames[pslot] = 2;
+            } else {
+              slotNames[pslot] = 0;
+            }
+          });
+        },
+      );
+    }
+  }
+
+  bool isChecked = false;
   var userName;
   late int noVehicles = 0;
+  // StreamSubscription<GeofenceStatus>? geofenceStatusStream;
+  // String geofenceStatus = '';
+  // setGeofencing() async {
+  //   if (geofenceStatusStream == null) {
+  //     EasyGeofencing.startGeofenceService(
+  //         pointedLatitude: "10.8243504",
+  //         pointedLongitude: "76.6424552",
+  //         radiusMeter: "400",
+  //         eventPeriodInSeconds: 10);
+
+  //     geofenceStatusStream =
+  //         EasyGeofencing.getGeofenceStream()!.listen((GeofenceStatus status) {
+  //       geoStatus = '$status';
+  //       print(pslot);
+  //       if (pslot != "" && toastRes > 0) {
+  //         toast("Slot ${pslot}is reserved for you!");
+  //         Fluttertoast.cancel();
+  //         toastRes--;
+  //       }
+  //     });
+  //     setState(() {
+  //       if (pslot != "") {
+  //         if (geoStatus == 'GeofenceStatus.enter') {
+  //           slotNames[pslot] = 2;
+  //         }
+  //       } else {
+  //         slotNames[pslot] = 0;
+  //       }
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    // fetchUserData();
+    fetchUserData();
+    if (geofenceStatusStream == null) {
+      setGeofencing();
+    }
     // setState(() async {
     //   final snapshot = await _db.collection('vehicles').get();
     //   noVehicles = snapshot.docs.length;
     //   userName = FirebaseAuth.instance.currentUser?.displayName;
     //   noVehicles;
     // });
+    // setState(() {
+    //   pslot = getPreferedSlots();
+    // });
+    // setGeofencing();
   }
 
   void fetchUserData() async {
-    final snapshot = await _db.collection('vehicles').where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid).get();
+    final snapshot = await _db
+        .collection('vehicles')
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+        .get();
     final int length = snapshot.docs.length;
     final String? name = FirebaseAuth.instance.currentUser?.displayName;
+    // pslot = snapshot.docs.elementAt(0)['prefered_slot'];
     setState(() {
       noVehicles = length;
       userName = name;
@@ -56,6 +136,15 @@ class ProfilePageState extends State<ProfilePage> {
   //     )
   //   )
   // }
+  toast(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +152,7 @@ class ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           title: const Text('Profile Page'),
         ),
-        drawer: MyDrawer(),
+        drawer: const MyDrawer(),
         body: Column(
           children: [
             Row(
@@ -87,7 +176,7 @@ class ProfilePageState extends State<ProfilePage> {
                       height: 20,
                     ),
                     Text(
-                      "${userName}",
+                      "$userName",
                       style: const TextStyle(
                         fontSize: 20,
                       ),
@@ -97,7 +186,7 @@ class ProfilePageState extends State<ProfilePage> {
                         top: 15,
                       ),
                       child: Text(
-                        'Number of Vehicles: ${noVehicles}',
+                        'Number of Vehicles: $noVehicles',
                         style: const TextStyle(
                           fontSize: 17,
                           color: Colors.black54,
@@ -109,13 +198,16 @@ class ProfilePageState extends State<ProfilePage> {
               ],
             ),
             StreamBuilder(
-              stream: _db.collection('vehicles').where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid).snapshots(),
+              stream: _db
+                  .collection('vehicles')
+                  .where('uid',
+                      isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Text('Loading...');
                 }
                 final documents = snapshot.data?.docs;
-                fetchUserData();
 
                 return ListView.builder(
                   shrinkWrap: true,
@@ -124,17 +216,25 @@ class ProfilePageState extends State<ProfilePage> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: (documents?[index]['type'] == 'bike')
-                          ? Icon(Icons.pedal_bike)
-                          : Icon(Icons.directions_car_sharp),
+                          ? const Icon(Icons.pedal_bike)
+                          : const Icon(Icons.directions_car_sharp),
                       title: Text(documents?[index]['name']),
-                      trailing: Text(documents?[index]['vehicle_no']),
+                      trailing: Text(
+                          "${documents?[index]['vehicle_no']} (${documents?[index]['prefered_slot']})"),
                       subtitle: Text(documents?[index]['type']),
+                      onTap: () {
+                        toast(
+                            "Your ${documents?[index]['name']} prefers slot ${documents?[index]['prefered_slot']}");
+                        slotNames[pslot] = 0;
+                        pslot = documents?[index]['prefered_slot'];
+                        toastRes = 1;
+                      },
                     );
                   },
                 );
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -200,5 +300,12 @@ class ProfilePageState extends State<ProfilePage> {
             // )
           ],
         ));
+  }
+
+  @override
+  void dispose() {
+    Fluttertoast.cancel();
+    // TODO: implement dispose
+    super.dispose();
   }
 }

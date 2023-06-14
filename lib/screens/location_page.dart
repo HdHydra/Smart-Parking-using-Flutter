@@ -3,7 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:model/widgets/drawer.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart' as loc;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -34,8 +33,9 @@ class _LocationPageState extends State<LocationPage> {
   @override
   void initState() {
     super.initState();
-    makeSlots();
     setState(() {
+      polygonSlotsCoordinates = [];
+      makeSlots();
       currentAccuracy = accuracy[choice];
     });
     // initBackgroundFetch();
@@ -47,8 +47,8 @@ class _LocationPageState extends State<LocationPage> {
     if (permission == PermissionStatus.granted) {
       await _getLocationStream();
     } else {
-      setState(() async {
-        await Permission.location.request();
+      setState(()  {
+        Permission.location.request();
       });
       _locationPermission();
     }
@@ -57,11 +57,8 @@ class _LocationPageState extends State<LocationPage> {
   Future _getLocationStream() async {
     print('start');
     Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.medium,
-        distanceFilter: 10,
-      ),
-    ).listen((Position position) {
+            desiredAccuracy: LocationAccuracy.best, distanceFilter: 10)
+        .listen((Position position) {
       setState(() {
         _currentPosition = position;
       });
@@ -70,7 +67,7 @@ class _LocationPageState extends State<LocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final locationRef = database.child('/location');
+    // final locationRef = database.child('/location');
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context); // pop the current page
@@ -80,101 +77,83 @@ class _LocationPageState extends State<LocationPage> {
         appBar: AppBar(
           // backgroundColor: Colors.pink[900],
           title: const Text('Find My Location'),
-          actions: [
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      choice = (choice + 1) % 3;
-                      currentAccuracy = accuracy[choice];
-                      currentMode = accuracyMode[choice];
-                      locationRef
-                          .child('slots')
-                          .set(currentMode)
-                          .then((_) => print('successful'))
-                          .catchError((error) => print('error caught $error'));
-                    });
-                  },
-                  child: Text(currentMode),
-                )
-              ],
-            )
-          ],
         ),
         drawer: MyDrawer(),
-        body: RepaintBoundary(
-          key: _globalKey,
-          child: _currentPosition == null
-              ? const Center(child: CircularProgressIndicator())
-              : FlutterMap(
-                  options: MapOptions(
-                    center: LatLng(
-                      _currentPosition!.latitude,
-                      _currentPosition!.longitude,
-                    ),
-                    interactiveFlags: InteractiveFlag.drag |
-                        InteractiveFlag.pinchZoom |
-                        InteractiveFlag.doubleTapZoom,
-                    zoom: 16.0,
-                    minZoom: 8,
-                    maxZoom: 21,
+        body: _currentPosition == null
+            ? const Center(child: CircularProgressIndicator())
+            : FlutterMap(
+                options: MapOptions(
+                  center: LatLng(
+                    _currentPosition!.latitude,
+                    _currentPosition!.longitude,
                   ),
-                  children: [
-                    RepaintBoundary(
-                      child: TileLayer(
-                        maxNativeZoom: 18,
-                        maxZoom: 20,
-                        urlTemplate:
-                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        subdomains: const ['a', 'b', 'c'],
-                        userAgentPackageName: 'com.example.model',
-                        retinaMode:
-                            MediaQuery.of(context).devicePixelRatio > 1.0,
-                      ),
+                  interactiveFlags: InteractiveFlag.drag |
+                      InteractiveFlag.pinchZoom |
+                      InteractiveFlag.doubleTapZoom,
+                  zoom: 16.0,
+                  minZoom: 8,
+                  maxZoom: 24,
+                ),
+                children: [
+                  RepaintBoundary(
+                    child: TileLayer(
+                      maxNativeZoom: 18,
+                      maxZoom: 20,
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: const ['a', 'b', 'c'],
+                      userAgentPackageName: 'com.example.model',
+                      retinaMode: MediaQuery.of(context).devicePixelRatio > 0.5,
                     ),
-                    RepaintBoundary(
-                      child: PolygonLayer(
+                  ),
+                  StreamBuilder<MapEntry<String, int>>(
+                    stream: Stream.fromIterable(slotNames.entries),
+                    builder: (context, snapshot) {
+                      Iterable<int> vals = slotNames.values;
+                      Iterable<String> keys = slotNames.keys;
+                      // print(slotNames.values);
+
+                      return PolygonLayer(
                         polygonCulling: false,
-                        polygons:
-                            polygonSlotsCoordinates.asMap().entries.map((entry) {
+                        polygons: polygonSlotsCoordinates
+                            .asMap()
+                            .entries
+                            .map((entry) {
                           int index = entry.key;
+
                           List<LatLng> coordinates = entry.value;
-                          Color color =
-                              polygonColors[index % polygonColors.length];
+
                           return Polygon(
                             points: coordinates,
-                            color: color,
+                            color: polygonColors[vals.elementAt(index)],
                             isFilled: true,
-                            label: '${entry.key}',
+                            label: keys.elementAt(index),
                             borderColor: Colors.black,
                             borderStrokeWidth: 0.2,
                           );
                         }).toList(),
+                      );
+                    },
+                  ),
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        // width: 80.0,
+                        // height: 80.0,
+                        anchorPos: AnchorPos.align(AnchorAlign.top),
+                        point: LatLng(
+                          _currentPosition!.latitude,
+                          _currentPosition!.longitude,
+                        ),
+                        builder: (ctx) => const Icon(
+                          Icons.location_pin,
+                          color: Colors.red,
+                        ),
                       ),
-                    ),
-                    RepaintBoundary(
-                      child: MarkerLayer(
-                        markers: [
-                          Marker(
-                            // width: 80.0,
-                            // height: 80.0,
-                            anchorPos: AnchorPos.align(AnchorAlign.top),
-                            point: LatLng(
-                              _currentPosition!.latitude,
-                              _currentPosition!.longitude,
-                            ),
-                            builder: (ctx) => const Icon(
-                              Icons.location_pin,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-        ),
+                    ],
+                  ),
+                ],
+              ),
       ),
     );
   }

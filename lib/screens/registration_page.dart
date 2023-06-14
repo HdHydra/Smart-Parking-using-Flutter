@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:model/screens/main_page.dart';
 import 'profile_page.dart';
 
 class RegistrationPage extends StatelessWidget {
@@ -42,11 +43,11 @@ class RegistrationPage extends StatelessWidget {
             ),
             Padding(
               padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: usernameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Username',
                     hintText: 'Enter your username'),
@@ -55,10 +56,10 @@ class RegistrationPage extends StatelessWidget {
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
                     hintText: 'Enter valid email id as abc@gmail.com'),
@@ -66,12 +67,12 @@ class RegistrationPage extends StatelessWidget {
             ),
             Padding(
               padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: passwordController,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter secure password'),
@@ -101,7 +102,7 @@ class RegistrationPage extends StatelessWidget {
                         await FirebaseAuth.instance.currentUser!.updateDisplayName(usernameController.text.trim());
                     print('Created New Account');
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ProfilePage()));
+                        MaterialPageRoute(builder: (context) => const MainPage()));
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
