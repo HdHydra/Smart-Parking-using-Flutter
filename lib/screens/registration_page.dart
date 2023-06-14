@@ -1,18 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:model/screens/main_page.dart';
-import 'profile_page.dart';
 
 class RegistrationPage extends StatelessWidget {
   RegistrationPage({super.key});
 
-//   @override
-//   _RegistrationState createState() => _RegistrationState();
-// }
-
-// class _RegistrationState extends State<RegistrationPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  toast(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
 
   String textError = "";
   final passwordController = TextEditingController();
@@ -28,23 +30,18 @@ class RegistrationPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Center(
                 child: SizedBox(
                     width: 200,
                     height: 150,
-                    /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
                     child: Image.asset('assets/images/logo.png')),
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
                 controller: usernameController,
                 decoration: const InputDecoration(
@@ -54,9 +51,8 @@ class RegistrationPage extends StatelessWidget {
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding:
-                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
                 controller: emailController,
                 decoration: const InputDecoration(
@@ -66,9 +62,8 @@ class RegistrationPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
                 controller: passwordController,
                 obscureText: true,
@@ -83,8 +78,7 @@ class RegistrationPage extends StatelessWidget {
             ),
             Padding(
               padding:
-                  EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
+                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: Text(textError),
             ),
             Container(
@@ -99,11 +93,15 @@ class RegistrationPage extends StatelessWidget {
                           email: emailController.text.trim(),
                           password: passwordController.text.trim())
                       .then((value) async {
-                        await FirebaseAuth.instance.currentUser!.updateDisplayName(usernameController.text.trim());
+                    await FirebaseAuth.instance.currentUser!
+                        .updateDisplayName(usernameController.text.trim());
                     print('Created New Account');
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MainPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainPage()));
                   }).onError((error, stackTrace) {
+                    toast('$error');
                     print("Error ${error.toString()}");
                   });
                 },

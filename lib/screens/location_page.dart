@@ -26,7 +26,6 @@ class _LocationPageState extends State<LocationPage> {
   List<String> accuracyMode = ["Low", "Medium", "High"];
   String currentMode = "High";
   int choice = 2;
-  final GlobalKey _globalKey = GlobalKey();
   Position? _currentPosition;
   var saved = 0;
 
@@ -38,7 +37,6 @@ class _LocationPageState extends State<LocationPage> {
       makeSlots();
       currentAccuracy = accuracy[choice];
     });
-    // initBackgroundFetch();
     _locationPermission();
   }
 
@@ -67,7 +65,6 @@ class _LocationPageState extends State<LocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final locationRef = database.child('/location');
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context); // pop the current page
@@ -75,7 +72,6 @@ class _LocationPageState extends State<LocationPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.pink[900],
           title: const Text('Find My Location'),
         ),
         drawer: MyDrawer(),
@@ -111,7 +107,6 @@ class _LocationPageState extends State<LocationPage> {
                     builder: (context, snapshot) {
                       Iterable<int> vals = slotNames.values;
                       Iterable<String> keys = slotNames.keys;
-                      // print(slotNames.values);
 
                       return PolygonLayer(
                         polygonCulling: false,
@@ -138,8 +133,6 @@ class _LocationPageState extends State<LocationPage> {
                   MarkerLayer(
                     markers: [
                       Marker(
-                        // width: 80.0,
-                        // height: 80.0,
                         anchorPos: AnchorPos.align(AnchorAlign.top),
                         point: LatLng(
                           _currentPosition!.latitude,

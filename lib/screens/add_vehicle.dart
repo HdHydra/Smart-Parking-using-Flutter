@@ -73,29 +73,26 @@ class AddVehicleState extends State<AddVehicle> {
                 child: SizedBox(
                   width: 200,
                   height: 150,
-                  /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
                   child: Image.asset(
                       'assets/images/${iconVehicle[widget.vehicle]}.png'),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
                 controller: _vehicleName,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Vehicle Name',
                     hintText: 'Enter name of your vehicle'),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
                 controller: _vehicleNo,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Vehicle Number',
                     hintText: 'Enter your vehicle number'),
@@ -103,10 +100,10 @@ class AddVehicleState extends State<AddVehicle> {
             ),
             Padding(
                 padding:
-                    EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
+                    const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
                 child: Row(
                   children: [
-                    Text('Prefered Slot'),
+                    const Text('Prefered Slot'),
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
                       child: DropdownButton<String>(
@@ -117,7 +114,7 @@ class AddVehicleState extends State<AddVehicle> {
                               value: value,
                               child: Text(
                                 value,
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16),
                               ));
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -125,7 +122,6 @@ class AddVehicleState extends State<AddVehicle> {
                             dropSlotName = newValue!;
                             dropSlotNumber = '1';
                             dropIndexValue = dropSlotNames.indexOf(newValue);
-                            // print("$dropSlotName${capacity[dropIndexValue]}");
                           });
                         },
                       ),
@@ -139,7 +135,7 @@ class AddVehicleState extends State<AddVehicle> {
                             value: value,
                             child: Text(
                               value,
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ));
                       }).toList(),
                       onChanged: (String? newValue2) {
@@ -152,13 +148,6 @@ class AddVehicleState extends State<AddVehicle> {
                     ),
                   ],
                 )
-                // TextField(
-                //   controller: _preferedSlot,
-                //   decoration: InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       labelText: 'Prefered Slot',
-                //       hintText: 'Enter your Prefered Slot'),
-                // ),
                 ),
             Container(
               height: 50,

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:easy_geofencing/easy_geofencing.dart';
 import 'package:easy_geofencing/enums/geofence_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:model/screens/add_vehicle.dart';
@@ -55,37 +54,6 @@ class ProfilePageState extends State<ProfilePage> {
   bool isChecked = false;
   var userName;
   late int noVehicles = 0;
-  // StreamSubscription<GeofenceStatus>? geofenceStatusStream;
-  // String geofenceStatus = '';
-  // setGeofencing() async {
-  //   if (geofenceStatusStream == null) {
-  //     EasyGeofencing.startGeofenceService(
-  //         pointedLatitude: "10.8243504",
-  //         pointedLongitude: "76.6424552",
-  //         radiusMeter: "400",
-  //         eventPeriodInSeconds: 10);
-
-  //     geofenceStatusStream =
-  //         EasyGeofencing.getGeofenceStream()!.listen((GeofenceStatus status) {
-  //       geoStatus = '$status';
-  //       print(pslot);
-  //       if (pslot != "" && toastRes > 0) {
-  //         toast("Slot ${pslot}is reserved for you!");
-  //         Fluttertoast.cancel();
-  //         toastRes--;
-  //       }
-  //     });
-  //     setState(() {
-  //       if (pslot != "") {
-  //         if (geoStatus == 'GeofenceStatus.enter') {
-  //           slotNames[pslot] = 2;
-  //         }
-  //       } else {
-  //         slotNames[pslot] = 0;
-  //       }
-  //     });
-  //   }
-  // }
 
   @override
   void initState() {
@@ -94,16 +62,6 @@ class ProfilePageState extends State<ProfilePage> {
     if (geofenceStatusStream == null) {
       setGeofencing();
     }
-    // setState(() async {
-    //   final snapshot = await _db.collection('vehicles').get();
-    //   noVehicles = snapshot.docs.length;
-    //   userName = FirebaseAuth.instance.currentUser?.displayName;
-    //   noVehicles;
-    // });
-    // setState(() {
-    //   pslot = getPreferedSlots();
-    // });
-    // setGeofencing();
   }
 
   void fetchUserData() async {
@@ -113,29 +71,12 @@ class ProfilePageState extends State<ProfilePage> {
         .get();
     final int length = snapshot.docs.length;
     final String? name = FirebaseAuth.instance.currentUser?.displayName;
-    // pslot = snapshot.docs.elementAt(0)['prefered_slot'];
     setState(() {
       noVehicles = length;
       userName = name;
     });
   }
-
-  // Future<int> getCollectionLength(String collectionName) async {
-  //   final snapshot = await _db.collection(collectionName).get();
-  //   final length = snapshot.docs.length;
-  //   return length;
-  // }
-
-  // Widget _buildListItem(BuildContext context, VehicleInfo  vehicleInfo) {
-  //   return ListTile(
-  //     title: Row(
-  //       children: [
-  //         Expanded(child:Text(vehicleInfo.name)),
-
-  //       ],
-  //     )
-  //   )
-  // }
+  
   toast(String msg) {
     Fluttertoast.showToast(
         msg: msg,

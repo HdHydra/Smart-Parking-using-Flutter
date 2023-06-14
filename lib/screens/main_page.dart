@@ -1,16 +1,12 @@
 import 'dart:async';
 
-import 'package:easy_geofencing/easy_geofencing.dart';
-import 'package:easy_geofencing/enums/geofence_status.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:model/screens/login_page.dart';
 import 'package:model/screens/profile_page.dart';
 
 import '../firebase_options.dart';
-import '../values/constants.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -24,9 +20,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsFlutterBinding.ensureInitialized();
-
     super.initState();
   }
 
@@ -54,7 +48,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }

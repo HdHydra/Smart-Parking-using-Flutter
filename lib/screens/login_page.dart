@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:model/screens/main_page.dart';
 import 'forgot_page.dart';
 import 'registration_page.dart';
@@ -7,11 +8,15 @@ import 'registration_page.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-//   @override
-//   _LoginPageState createState() => _LoginPageState();
-// }
-
-// class _LoginPageState extends State<LoginPage> {
+  toast(String msg) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -32,14 +37,10 @@ class LoginPage extends StatelessWidget {
                 child: SizedBox(
                     width: 200,
                     height: 150,
-                    /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
                     child: Image.asset('assets/images/logo.png')),
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: emailController,
@@ -50,9 +51,8 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
                 obscureText: true,
                 controller: passwordController,
@@ -84,12 +84,13 @@ class LoginPage extends StatelessWidget {
                           email: emailController.text.trim(),
                           password: passwordController.text.trim())
                       .then((value) {
-                        print('Login Successful');
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => MainPage()));
-                      }).onError((error, stackTrace) {
-                        print('Error ${error}');
-                      });
+                    print('Login Successful');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainPage()));
+                  }).onError((error, stackTrace) {
+                    toast('${error}');
+                    print('Error ${error}');
+                  });
                 },
                 child: const Text(
                   'Login',

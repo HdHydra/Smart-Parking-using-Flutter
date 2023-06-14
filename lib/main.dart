@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:model/screens/main_page.dart';
-import 'screens/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(primarySwatch: primaryColor),
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: const MainPage(),
     );
   }
 }
