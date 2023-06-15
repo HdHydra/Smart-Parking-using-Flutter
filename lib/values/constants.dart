@@ -252,7 +252,7 @@ List<int> capacity = [48, 70, 40, 11, 3, 6, 8, 12, 6, 2, 14, 4, 4, 4, 4, 8];
 
 String geoStatus = "";
 String pslot = "";
-int toastRes = 2;
+int toastRes = 1;
 
 List<Color> polygonColors = [Colors.green, Colors.red, Colors.yellow];
 List<List<LatLng>> polygonSlotsCoordinates = [];

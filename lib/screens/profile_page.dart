@@ -29,32 +29,27 @@ class ProfilePageState extends State<ProfilePage> {
       EasyGeofencing.startGeofenceService(
           pointedLatitude: "10.8243504",
           pointedLongitude: "76.6424552",
-          radiusMeter: "250",
+          radiusMeter: "400",
           eventPeriodInSeconds: 10);
 
       geofenceStatusStream = EasyGeofencing.getGeofenceStream()!.listen(
         (GeofenceStatus status) {
           geoStatus = '$status';
-          //print(pslot);
-          if (pslot != "" && toastRes != 0) {
-            toastRes = 0;
-          }
+          print(pslot);
           if (pslot != "") {
-            if (geoStatus == 'GeofenceStatus.enter') {
+            if (geoStatus == 'GeofenceStatus.enter' && slotNames[pslot] != 2) {
               toast("Slot $pslot is reserved for you!");
               setState(() {
-                reserved = true;
                 slotNames[pslot] = 2;
               });
             }
-          } else {
-            if (reserved && slotNames[pslot] == 2) {
+          } else if (geoStatus == 'GeofenceStatus.exit') {
+            if (slotNames[pslot] == 2) {
               toast("Slot $pslot has been freed!");
               setState(() {
-                reserved = false;
+                slotNames[pslot] = 0;
               });
             }
-            slotNames[pslot] = 0;
           }
         },
       );
@@ -88,13 +83,15 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   toast(String msg) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    if (toastRes == 1) {
+      Fluttertoast.showToast(
+          msg: msg,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 
   @override
@@ -216,7 +213,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   void dispose() {
-    Fluttertoast.cancel();
+    // Fluttertoast.cancel();
     super.dispose();
   }
 }

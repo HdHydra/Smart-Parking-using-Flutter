@@ -43,13 +43,5 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
 }

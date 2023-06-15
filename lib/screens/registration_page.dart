@@ -101,7 +101,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     await FirebaseAuth.instance.currentUser!
                         .updateDisplayName(usernameController.text.trim());
                     //print('Created New Account');
-                    MaterialPageRoute(builder: (context) => const MainPage());
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainPage()));
                   }).onError((error, stackTrace) {
                     toast('$error');
                     //print("Error ${error.toString()}");
