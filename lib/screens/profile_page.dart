@@ -35,7 +35,7 @@ class ProfilePageState extends State<ProfilePage> {
       geofenceStatusStream = EasyGeofencing.getGeofenceStream()!.listen(
         (GeofenceStatus status) {
           geoStatus = '$status';
-          print(pslot);
+          //print(pslot);
           if (pslot != "" && toastRes != 0) {
             toastRes = 0;
           }
@@ -62,7 +62,7 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   bool isChecked = false;
-  var userName;
+  var userName = "Loading...";
   late int noVehicles = 0;
 
   @override
@@ -83,7 +83,7 @@ class ProfilePageState extends State<ProfilePage> {
     final String? name = FirebaseAuth.instance.currentUser?.displayName;
     setState(() {
       noVehicles = length;
-      userName = name;
+      userName = name!;
     });
   }
 
@@ -127,7 +127,7 @@ class ProfilePageState extends State<ProfilePage> {
                     height: 20,
                   ),
                   Text(
-                    "$userName",
+                    userName,
                     style: const TextStyle(
                       fontSize: 20,
                     ),
@@ -217,7 +217,6 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() {
     Fluttertoast.cancel();
-    // TODO: implement dispose
     super.dispose();
   }
 }

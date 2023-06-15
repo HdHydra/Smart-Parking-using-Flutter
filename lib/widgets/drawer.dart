@@ -20,41 +20,41 @@ class MyDrawer extends StatelessWidget {
         padding: EdgeInsets.all(0),
         children: <Widget>[
           DrawerHeader(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.black,
             ),
             child: _profile(),
           ),
           ListTile(
-            title: Text('Profile Page'),
+            title: const Text('Profile Page'),
             onTap: () {
               // Define what happens when Button 1 is pressed.9
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => ProfilePage()));
+                  context, MaterialPageRoute(builder: (_) => const ProfilePage()));
             },
           ),
           ListTile(
-            title: Text('Find My Location'),
+            title: const Text('Find My Location'),
             onTap: () {
               // Define what happens when Button 2 is pressed.
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => LocationPage()));
+                  context, MaterialPageRoute(builder: (_) => const LocationPage()));
             },
           ),
           ListTile(
-            title: Text('Settings'),
+            title: const Text('Settings'),
             onTap: () {
               // Define what happens when Button 3 is pressed.
             },
           ),
           ListTile(
-              title: Text('Sign Out'),
+              title: const Text('Sign Out'),
               onTap: () {
                 EasyGeofencing.stopGeofenceService();
                 FirebaseAuth.instance.signOut();
                 Navigator.popUntil(context, (route) => false);
-                print(
-                    'Successfully logout ${FirebaseAuth.instance.currentUser!.email}');
+                //print(
+                //    'Successfully logout ${FirebaseAuth.instance.currentUser!.email}');
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginPage()));
               })
@@ -65,7 +65,7 @@ class MyDrawer extends StatelessWidget {
 }
 
 Widget _profile() {
-  return Column(
+  return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[

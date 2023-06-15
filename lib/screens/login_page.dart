@@ -84,12 +84,12 @@ class LoginPage extends StatelessWidget {
                           email: emailController.text.trim(),
                           password: passwordController.text.trim())
                       .then((value) {
-                    print('Login Successful');
+                    //print('Login Successful');
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MainPage()));
+                        MaterialPageRoute(builder: (context) => const MainPage()));
                   }).onError((error, stackTrace) {
-                    toast('${error}');
-                    print('Error ${error}');
+                    toast('$error');
+                    //print('Error ${error}');
                   });
                 },
                 child: const Text(
@@ -106,7 +106,7 @@ class LoginPage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => RegistrationPage()));
+                        builder: (context) => const RegistrationPage()));
               },
               child: const Text(
                 'New User? Create Account',

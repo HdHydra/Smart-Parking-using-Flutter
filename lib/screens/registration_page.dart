@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:model/screens/main_page.dart';
 
-class RegistrationPage extends StatelessWidget {
-  RegistrationPage({super.key});
+class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
 
+  @override
+  State<RegistrationPage> createState() => _RegistrationPageState();
+}
+
+class _RegistrationPageState extends State<RegistrationPage> {
   toast(String msg) {
     Fluttertoast.showToast(
         msg: msg,
@@ -96,10 +101,7 @@ class RegistrationPage extends StatelessWidget {
                     await FirebaseAuth.instance.currentUser!
                         .updateDisplayName(usernameController.text.trim());
                     //print('Created New Account');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainPage()));
+                    MaterialPageRoute(builder: (context) => const MainPage());
                   }).onError((error, stackTrace) {
                     toast('$error');
                     //print("Error ${error.toString()}");
