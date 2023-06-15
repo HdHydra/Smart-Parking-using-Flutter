@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_geofencing/easy_geofencing.dart';
 import 'package:easy_geofencing/enums/geofence_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:model/screens/add_vehicle.dart';
@@ -20,6 +21,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+  
+
+  bool reserved = false;
+
   StreamSubscription<GeofenceStatus>? geofenceStatusStream;
   String geofenceStatus = '';
   setGeofencing() async {
@@ -27,7 +32,7 @@ class ProfilePageState extends State<ProfilePage> {
       EasyGeofencing.startGeofenceService(
           pointedLatitude: "10.8243504",
           pointedLongitude: "76.6424552",
-          radiusMeter: "399",
+          radiusMeter: "250",
           eventPeriodInSeconds: 10);
 
       geofenceStatusStream = EasyGeofencing.getGeofenceStream()!.listen(
@@ -35,17 +40,25 @@ class ProfilePageState extends State<ProfilePage> {
           geoStatus = '$status';
           print(pslot);
           if (pslot != "" && toastRes != 0) {
-            toast("Slot ${pslot} is reserved for you!");
-            // Fluttertoast.cancel();
             toastRes = 0;
           }
-          setState(() {
-            if (pslot != "") {
-              if (geoStatus == 'GeofenceStatus.enter') slotNames[pslot] = 2;
-            } else {
-              slotNames[pslot] = 0;
+          if (pslot != "") {
+            if (geoStatus == 'GeofenceStatus.enter') {
+              toast("Slot $pslot is reserved for you!");
+              setState(() {
+                reserved = true;
+                slotNames[pslot] = 2;
+              });
             }
-          });
+          } else {
+            if (reserved && slotNames[pslot] == 2) {
+              toast("Slot $pslot has been freed!");
+              setState(() {
+                reserved = false;
+              });
+            }
+            slotNames[pslot] = 0;
+          }
         },
       );
     }
@@ -76,7 +89,7 @@ class ProfilePageState extends State<ProfilePage> {
       userName = name;
     });
   }
-  
+
   toast(String msg) {
     Fluttertoast.showToast(
         msg: msg,
