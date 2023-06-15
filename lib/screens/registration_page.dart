@@ -95,14 +95,14 @@ class RegistrationPage extends StatelessWidget {
                       .then((value) async {
                     await FirebaseAuth.instance.currentUser!
                         .updateDisplayName(usernameController.text.trim());
-                    print('Created New Account');
+                    //print('Created New Account');
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MainPage()));
                   }).onError((error, stackTrace) {
                     toast('$error');
-                    print("Error ${error.toString()}");
+                    //print("Error ${error.toString()}");
                   });
                 },
                 child: const Text(

@@ -11,6 +11,13 @@ class AddVehicle extends StatefulWidget {
 }
 
 class AddVehicleState extends State<AddVehicle> {
+  List<String> iconVehicle = [
+    'bike',
+    'car',
+  ];
+  final _vehicleName = TextEditingController();
+  final _vehicleNo = TextEditingController();
+  late String preferedSlot;
   List<String> dropSlotNames = [
     'A',
     'B',
@@ -27,21 +34,13 @@ class AddVehicleState extends State<AddVehicle> {
     'M',
     'N',
     'O',
-    'P'
+    'P',
   ];
   String dropSlotName = "A";
-  String dropSlotNumber = "1";
   int dropIndexValue = 0;
-  List<String> iconVehicle = [
-    'bike',
-    'car',
-  ];
+  String dropSlotNumber = "1";
 
-  final _vehicleName = TextEditingController();
-  late String preferedSlot;
-  final _vehicleNo = TextEditingController();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-
   void addDataToFirestore() {
     final String name = _vehicleName.text;
     final String no = _vehicleNo.text;
@@ -79,7 +78,8 @@ class AddVehicleState extends State<AddVehicle> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
+              padding: const EdgeInsets.only(
+                  left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
                 controller: _vehicleName,
                 decoration: const InputDecoration(
@@ -89,7 +89,8 @@ class AddVehicleState extends State<AddVehicle> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
+              padding: const EdgeInsets.only(
+                  left: 15, right: 15, top: 15, bottom: 0),
               child: TextField(
                 controller: _vehicleNo,
                 decoration: const InputDecoration(
@@ -99,8 +100,8 @@ class AddVehicleState extends State<AddVehicle> {
               ),
             ),
             Padding(
-                padding:
-                    const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
+                padding: const EdgeInsets.only(
+                    left: 15, right: 15, top: 15, bottom: 0),
                 child: Row(
                   children: [
                     const Text('Prefered Slot'),
@@ -142,13 +143,12 @@ class AddVehicleState extends State<AddVehicle> {
                         setState(() {
                           preferedSlot = '$dropSlotName$newValue2';
                           dropSlotNumber = newValue2!;
-                          print(preferedSlot);
+                          //print(preferedSlot);
                         });
                       },
                     ),
                   ],
-                )
-                ),
+                )),
             Container(
               height: 50,
             ),

@@ -24,10 +24,10 @@ class ForgotPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: TextField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   hintText: 'Enter your mail ID',
                   border: OutlineInputBorder(),

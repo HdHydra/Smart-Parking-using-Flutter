@@ -53,7 +53,7 @@ class _LocationPageState extends State<LocationPage> {
   }
 
   Future _getLocationStream() async {
-    print('start');
+    //print('start');
     Geolocator.getPositionStream(
             desiredAccuracy: LocationAccuracy.best, distanceFilter: 10)
         .listen((Position position) {
@@ -74,7 +74,7 @@ class _LocationPageState extends State<LocationPage> {
         appBar: AppBar(
           title: const Text('Find My Location'),
         ),
-        drawer: MyDrawer(),
+        drawer: const MyDrawer(),
         body: _currentPosition == null
             ? const Center(child: CircularProgressIndicator())
             : FlutterMap(

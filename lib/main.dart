@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   final primaryColor = const MaterialColor(
-    0xFF000000, // specify the primary color value as black
+    0xFF000000, 
     <int, Color>{
       50: Color(0xFFE3F2FD),
       100: Color(0xFFBBDEFB),

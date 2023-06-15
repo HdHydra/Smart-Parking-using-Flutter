@@ -1,9 +1,5 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:firebase_database/firebase_database.dart';
-// import 'dart:math';
 
 Map<String, int> slotNames = {
   'A1': 0,
@@ -251,7 +247,7 @@ Map<String, int> slotNames = {
   'P7': 0,
   'P8': 0,
 };
-final int noSlots = 16;
+const int noSlots = 16;
 List<int> capacity = [48, 70, 40, 11, 3, 6, 8, 12, 6, 2, 14, 4, 4, 4, 4, 8];
 
 String geoStatus = "";
@@ -358,13 +354,6 @@ List<List<LatLng>> polygonCoordinates = [
     LatLng(10.82382065, 76.64332662),
   ],
 ];
-// getPreferedSlots() async {
-//   QuerySnapshot<Map<String, dynamic>> snapshot =
-//       await FirebaseFirestore.instance.collection('vehicles').get();
-//   try {
-//     return snapshot.docs[]['prefered_slot'];
-//   } finally {}
-// }
 
 void makeSlots() {
   makeList(10.82346691, 76.64191132, 10.82343014, 76.64234197, 10.82336177,
@@ -419,66 +408,3 @@ void makeList(double x1, double y1, double x2, double y2, double x3, double y3,
     polygonSlotsCoordinates.add(temp);
   }
 }
-
-// void nameGenerate() {
-//   polygonSlotsCoordinates.asMap().entries.map((entry) {
-//     int index = entry.key;
-//     String slotName = "";
-//     int slotsNo = 0;
-//     int slotCount = 0;
-//     int sum = 0;
-
-//     if (slotsNo > capacity[slotCount]) {
-//       sum = sum + capacity[slotCount];
-//       slotsNo = index - sum;
-//       slotCount++;
-//     }
-
-//     slotNames[index] = "${slotCount + 1}-${slotsNo + 1}";
-//     print(slotNames);
-
-//     slotsNo++;
-//   });
-// }
-
-// void makeList(double a, double b, double c, double d) {
-//   for (int index = 0; index < noSlots; index++) {
-//     for (int i = 0; i < capacity[index]; i++) {
-//       if ((a - b).abs() > (c - d).abs()) {
-//         double aDash =
-//             (a > b) ? a : b + (((b - a).abs() / capacity[index]) * i);
-//         double bDash =
-//             (a > b) ? a : b + (((b - a).abs() / capacity[index]) * (i + 1));
-//         double cDash =
-//             (c > d) ? c : d + (((d - c).abs() / capacity[index]) * i);
-//         double dDash =
-//             (c > d) ? c : d + (((d - c).abs() / capacity[index]) * (i + 1));
-//         print('${aDash} ${bDash} ${cDash} ${dDash}');
-//       } else {
-//         double aDash =
-//             (d > a) ? d : a + (((a - d).abs() / capacity[index]) * i);
-//         double bDash =
-//             (d > a) ? d : a + (((a - d).abs() / capacity[index]) * (i + 1));
-//         double cDash =
-//             (b > c) ? b : c + (((c - b).abs() / capacity[index]) * i);
-//         double dDash =
-//             (b > c) ? b : c + (((c - b).abs() / capacity[index]) * (i + 1));
-//         print('${aDash} ${bDash} ${cDash} ${dDash}');
-//       }
-//       print('${a} ${b} ${c} ${d}');
-//     }
-//   }
-// }
-// void makeList(double a, double b, double c, double d) {
-//   for (int index = 0; index < noSlots; index++) {
-//     for (int i = 0; i < capacity[index]; i++) {
-//       if ((a - b).abs() > (c - d).abs()) {
-//         double aDash = (a>b)?a:b + (((b - a).abs() / capacity[index]) * i);
-//         double cDash = (c>d)?c:d + (((d - c).abs() / capacity[index]) * i);
-//       } else {
-//         double bc = (b>c)?b:c + (((c - b).abs() / capacity[index]) * i);
-//         double da = (d>a)?d:a + (((a - d).abs() / capacity[index]) * i);
-//       }
-//     }
-//   }
-// }
