@@ -29,7 +29,7 @@ class ProfilePageState extends State<ProfilePage> {
       EasyGeofencing.startGeofenceService(
           pointedLatitude: "10.8243504",
           pointedLongitude: "76.6424552",
-          radiusMeter: "400",
+          radiusMeter: "350",
           eventPeriodInSeconds: 10);
 
       geofenceStatusStream = EasyGeofencing.getGeofenceStream()!.listen(

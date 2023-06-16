@@ -11,7 +11,7 @@
 
 
     <application
-        android:label="model"
+        android:label="Smart Parking"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
